@@ -10,6 +10,8 @@
     "!src/cli.ts",
     "!src/index.ts"
   ],
+  "coverageDirectory": "coverage",
+  "coverageReporters": ["text", "lcov", "json-summary"],
   "coverageThreshold": {
     "global": {
       "branches": 70,

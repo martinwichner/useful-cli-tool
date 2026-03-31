@@ -42,7 +42,11 @@ jobs:
 
       - name: Check test coverage threshold
         run: |
-          COVERAGE=$(jq '.total.lines.pct' coverage/coverage-summary.json)
+          if [ ! -f coverage/coverage-summary.json ]; then
+            echo "❌ Coverage report not found. Make sure 'npm run test:coverage' generates coverage/coverage-summary.json"
+            exit 1
+          fi
+          COVERAGE=$(node -p "require('./coverage/coverage-summary.json').total.lines.pct")
           if (( $(echo "$COVERAGE < 80" | bc -l) )); then
             echo "❌ Test coverage is too low: ${COVERAGE}% (minimum: 80%)"
             exit 1
