@@ -3,42 +3,42 @@ import { Logger } from '../services/Logger.js';
 
 /**
  * Command Registry
- * Verwaltung und Registrierung aller verfügbaren Commands
+ * Manages registration and lookup of available commands
  */
 export class CommandRegistry {
   private commands: Map<string, ICommand> = new Map();
 
   /**
-   * Registriert einen neuen Command
+   * Registers a new command
    */
   register(command: ICommand): void {
     this.commands.set(command.name, command);
-    Logger.debug(`Command '${command.name}' registriert`);
+    Logger.debug(`Command '${command.name}' registered`);
   }
 
   /**
-   * Gibt einen Command nach Name zurück
+   * Gets a command by name
    */
   get(name: string): ICommand | undefined {
     return this.commands.get(name);
   }
 
   /**
-   * Prüft, ob ein Command existiert
+   * Checks if a command exists
    */
   exists(name: string): boolean {
     return this.commands.has(name);
   }
 
   /**
-   * Gibt alle registrierten Commands zurück
+   * Returns all registered commands
    */
   getAll(): ICommand[] {
     return Array.from(this.commands.values());
   }
 
   /**
-   * Gibt alle Command-Namen zurück
+   * Returns all command names
    */
   getCommandNames(): string[] {
     return Array.from(this.commands.keys());

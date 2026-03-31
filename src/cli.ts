@@ -12,7 +12,7 @@ async function main(): Promise<void> {
   if (args.length === 0 || args[0] === '--help' || args[0] === '-h') {
     const kernel = new CLIKernel();
     console.log('📦 Useful CLI Tool v1.0.0');
-    console.log('\nVerwendung: useful-cli [command] [options]\n');
+    console.log('\nUsage: useful-cli [command] [options]\n');
     kernel.showHelp();
     process.exit(0);
   }
@@ -25,7 +25,7 @@ async function main(): Promise<void> {
 }
 
 main().catch((error) => {
-  Logger.error('Unerwarteter Fehler');
+  Logger.error('Unexpected error');
   if (error instanceof Error) {
     Logger.error(error.message);
   }

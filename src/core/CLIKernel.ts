@@ -4,8 +4,8 @@ import { HelloCommand } from '../commands/HelloCommand.js';
 import { ListCommand } from '../commands/ListCommand.js';
 
 /**
- * CLI Anwendungs-Kernel
- * Verwaltet die Initialisierung und Ausführung von Commands
+ * CLI Application Kernel
+ * Manages command initialization and execution
  */
 export class CLIKernel {
   private registry: CommandRegistry;
@@ -16,7 +16,7 @@ export class CLIKernel {
   }
 
   /**
-   * Initialisiert alle verfügbaren Commands
+   * Initializes available commands
    */
   private initializeCommands(): void {
     this.registry.register(new HelloCommand());
@@ -24,13 +24,13 @@ export class CLIKernel {
   }
 
   /**
-   * Führt einen Command aus
+   * Execute a command
    */
   async run(commandName: string, args: string[]): Promise<void> {
     const command = this.registry.get(commandName);
 
     if (!command) {
-      Logger.error(`Command '${commandName}' nicht gefunden`);
+      Logger.error(`Command '${commandName}' not found`);
       this.showHelp();
       process.exit(1);
     }
@@ -38,7 +38,7 @@ export class CLIKernel {
     try {
       await command.execute(args);
     } catch (error) {
-      Logger.error(`Fehler bei Ausführung von '${commandName}'`);
+      Logger.error(`Error executing '${commandName}'`);
       if (error instanceof Error) {
         Logger.error(error.message);
       }
@@ -47,10 +47,10 @@ export class CLIKernel {
   }
 
   /**
-   * Zeigt alle verfügbaren Commands an
+   * Shows available commands
    */
   showHelp(): void {
-    console.log('\n📚 Verfügbare Commands:\n');
+    console.log('\n📚 Available commands:\n');
     this.registry.getAll().forEach((command) => {
       console.log(`  ${command.name.padEnd(15)} - ${command.description}`);
     });
@@ -58,7 +58,7 @@ export class CLIKernel {
   }
 
   /**
-   * Gibt die Command Registry zurück (für Tests und Erweiterungen)
+   * Returns the command registry (for tests and extensions)
    */
   getRegistry(): CommandRegistry {
     return this.registry;
