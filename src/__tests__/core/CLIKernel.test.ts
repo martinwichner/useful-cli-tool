@@ -22,6 +22,7 @@ describe('CLIKernel', () => {
       const registry = kernel.getRegistry();
       expect(registry.exists('hello')).toBe(true);
       expect(registry.exists('list')).toBe(true);
+      expect(registry.exists('calc')).toBe(true);
     });
   });
 
@@ -57,6 +58,7 @@ describe('CLIKernel', () => {
       const registry = kernel.getRegistry();
       expect(registry).toBeDefined();
       expect(registry.exists('hello')).toBe(true);
+      expect(registry.exists('calc')).toBe(true);
     });
   });
 });

@@ -2,6 +2,7 @@ import { CommandRegistry } from './CommandRegistry.js';
 import { Logger } from '../services/Logger.js';
 import { HelloCommand } from '../commands/HelloCommand.js';
 import { ListCommand } from '../commands/ListCommand.js';
+import { CalcCommand } from '../commands/CalcCommand.js';
 
 /**
  * CLI Application Kernel
@@ -21,6 +22,7 @@ export class CLIKernel {
   private initializeCommands(): void {
     this.registry.register(new HelloCommand());
     this.registry.register(new ListCommand());
+    this.registry.register(new CalcCommand());
   }
 
   /**
