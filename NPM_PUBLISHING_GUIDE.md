@@ -15,7 +15,10 @@ This guide explains how to set up automated npm publishing for the useful-cli-to
 3. Navigate to "Access Tokens" in the left sidebar
 4. Click "Generate New Token" → "Automation"
 5. Give it a descriptive name like "useful-cli-tool-github-actions"
-6. Copy the generated token immediately (you won't see it again!)
+6. Enable the following scope:
+   - `Publish` (write access to publish packages)
+7. Set "Bypass 2FA" to **enabled**, so CI can publish successfully when two-factor authentication is active on your account.
+8. Copy the generated token immediately (you won't see it again!)
 
 ## Step 2: Configure GitHub Secrets
 
@@ -77,6 +80,8 @@ The workflow ensures:
 - Check that NPM_TOKEN is correctly set in GitHub secrets
 - Verify the token has automation permissions
 - Ensure package name is available on npm
+- If you have two-factor authentication (2FA) on npm enabled, make sure the token is a **Granular/Automation token with "Bypass 2FA" enabled**
+- If you still see E403, generate a fresh token and re-add it to GitHub secrets
 
 ### Tests Fail in CI
 - Run `npm test` locally to debug
