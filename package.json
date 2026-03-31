@@ -42,7 +42,8 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE"
+    "LICENSE",
+    "NPM_PUBLISHING_GUIDE.md"
   ],
   "engines": {
     "node": ">=18.0.0",
