@@ -2,17 +2,88 @@ name: Publish to npm
 
 on:
   release:
-    types: [created]
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to publish (e.g., 1.0.0)'
+        required: true
+        type: string
 
 jobs:
-  publish:
+  # Quality checks across multiple Node.js versions
+  quality-check:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check TypeScript compilation
+        run: npm run build
+
+      - name: Run linter
+        run: npm run lint
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Check test coverage threshold
+        run: |
+          COVERAGE=$(jq '.total.lines.pct' coverage/coverage-summary.json)
+          if (( $(echo "$COVERAGE < 80" | bc -l) )); then
+            echo "❌ Test coverage is too low: ${COVERAGE}% (minimum: 80%)"
+            exit 1
+          fi
+          echo "✅ Test coverage: ${COVERAGE}%"
+
+      - name: Validate package.json
+        run: |
+          # Check if all required fields are present
+          node -e "
+          const pkg = require('./package.json');
+          const required = ['name', 'version', 'description', 'main', 'bin', 'author', 'license', 'repository'];
+          const missing = required.filter(field => !pkg[field]);
+          if (missing.length > 0) {
+            console.error('❌ Missing required fields in package.json:', missing);
+            process.exit(1);
+          }
+          console.log('✅ package.json validation passed');
+          "
+
+      - name: Check if version already exists on npm
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view useful-cli-tool@$VERSION version 2>/dev/null; then
+            echo "❌ Version $VERSION already exists on npm"
+            exit 1
+          fi
+          echo "✅ Version $VERSION is available for publishing"
+
+  # Publish job that depends on quality checks
+  publish:
+    needs: quality-check
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
@@ -21,16 +92,38 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
-        run: npm test
-
-      - name: Run linter
-        run: npm run lint
-
       - name: Build package
         run: npm run build
 
-      - name: Publish to npm
-        run: npm publish
+      - name: Dry run publish to verify
+        run: npm publish --dry-run
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Publish to npm
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Create GitHub release notes
+        if: github.event_name == 'release'
+        run: |
+          echo "## 🚀 Published to npm" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Package:** useful-cli-tool" >> $GITHUB_STEP_SUMMARY
+          echo "**Version:** $(node -p "require('./package.json').version")" >> $GITHUB_STEP_SUMMARY
+          echo "**Published by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### ✅ Quality Checks Passed" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ TypeScript compilation" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ ESLint checks" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Test coverage (80%+)" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Package validation" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Version availability check" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Installation" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`bash" >> $GITHUB_STEP_SUMMARY
+          echo "npm install -g useful-cli-tool" >> $GITHUB_STEP_SUMMARY
+          echo "# or" >> $GITHUB_STEP_SUMMARY
+          echo "npx useful-cli-tool --help" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
