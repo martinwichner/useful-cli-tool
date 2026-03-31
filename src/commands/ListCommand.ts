@@ -3,13 +3,13 @@ import { Logger } from '../services/Logger.js';
 
 /**
  * List Command
- * Zeigt die verfügbaren Commands an
+ * Shows available commands
  */
 export class ListCommand implements ICommand {
   name = 'list';
-  description = 'Zeigt alle verfügbaren Commands an';
+  description = 'Displays all available commands';
 
   async execute(_args: string[]): Promise<void> {
-    Logger.info('Verwende "useful-cli --help" für eine vollständige Übersicht');
+    Logger.info('Use "useful-cli --help" for complete usage instructions');
   }
 }

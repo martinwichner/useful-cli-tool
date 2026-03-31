@@ -2,15 +2,15 @@ import { ICommand } from '../types/Command.js';
 import { Logger } from '../services/Logger.js';
 
 /**
- * Hello Command - Beispiel Command
- * Gibt eine Willkommensnachricht aus
+ * Hello Command
+ * Prints a welcome message
  */
 export class HelloCommand implements ICommand {
   name = 'hello';
-  description = 'Zeigt eine Willkommensnachricht';
+  description = 'Displays a welcome message';
 
   async execute(args: string[]): Promise<void> {
-    const name = args[0] || 'Welt';
-    Logger.success(`Hallo, ${name}!`);
+    const name = args[0] || 'World';
+    Logger.success(`Hello, ${name}!`);
   }
 }
