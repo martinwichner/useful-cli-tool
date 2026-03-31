@@ -1,6 +1,6 @@
 {
   "name": "useful-cli-tool",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A modular and extensible CLI tool built with TypeScript",
   "main": "dist/index.js",
   "bin": {
