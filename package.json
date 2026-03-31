@@ -1,0 +1,47 @@
+{
+  "name": "useful-cli-tool",
+  "version": "1.0.0",
+  "description": "A modular and extensible CLI tool built with TypeScript",
+  "main": "dist/index.js",
+  "bin": {
+    "useful-cli": "./dist/cli.js"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "lint": "eslint src --ext .ts",
+    "lint:fix": "eslint src --ext .ts --fix",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test && npm run lint",
+    "postinstall": "npm run build"
+  },
+  "keywords": [
+    "cli",
+    "tool",
+    "command-line",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.0",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {}
+}
