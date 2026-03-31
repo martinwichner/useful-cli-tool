@@ -24,6 +24,7 @@ describe('CLIKernel', () => {
       expect(registry.exists('list')).toBe(true);
       expect(registry.exists('calc')).toBe(true);
       expect(registry.exists('help')).toBe(true);
+      expect(registry.exists('init')).toBe(true);
     });
   });
 
