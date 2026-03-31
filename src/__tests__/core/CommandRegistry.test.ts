@@ -9,7 +9,7 @@ describe('CommandRegistry', () => {
   });
 
   describe('register', () => {
-    it('sollte einen Command registrieren', () => {
+    it('registers a command', () => {
       const mockCommand: ICommand = {
         name: 'test',
         description: 'Test Command',
@@ -20,7 +20,7 @@ describe('CommandRegistry', () => {
       expect(registry.exists('test')).toBe(true);
     });
 
-    it('sollte mehrere Commands registrieren', () => {
+    it('registers multiple commands', () => {
       const command1: ICommand = {
         name: 'cmd1',
         description: 'Command 1',
@@ -42,7 +42,7 @@ describe('CommandRegistry', () => {
   });
 
   describe('get', () => {
-    it('sollte einen registrierten Command zurückgeben', () => {
+    it('returns a registered command', () => {
       const mockCommand: ICommand = {
         name: 'test',
         description: 'Test Command',
@@ -55,13 +55,13 @@ describe('CommandRegistry', () => {
       expect(retrieved).toEqual(mockCommand);
     });
 
-    it('sollte undefined zurückgeben für unbekannte Commands', () => {
+    it('returns undefined for unknown commands', () => {
       expect(registry.get('nonexistent')).toBeUndefined();
     });
   });
 
   describe('exists', () => {
-    it('sollte true zurückgeben wenn Command existiert', () => {
+    it('returns true when command exists', () => {
       const mockCommand: ICommand = {
         name: 'test',
         description: 'Test Command',
@@ -72,13 +72,13 @@ describe('CommandRegistry', () => {
       expect(registry.exists('test')).toBe(true);
     });
 
-    it('sollte false zurückgeben wenn Command nicht existiert', () => {
+    it('returns false when command does not exist', () => {
       expect(registry.exists('nonexistent')).toBe(false);
     });
   });
 
   describe('getAll', () => {
-    it('sollte alle registrierten Commands zurückgeben', () => {
+    it('returns all registered commands', () => {
       const command1: ICommand = {
         name: 'cmd1',
         description: 'Command 1',
@@ -99,13 +99,13 @@ describe('CommandRegistry', () => {
       expect(allCommands).toContain(command2);
     });
 
-    it('sollte leeres Array zurückgeben wenn keine Commands registriert sind', () => {
+    it('returns empty array when no commands are registered', () => {
       expect(registry.getAll()).toEqual([]);
     });
   });
 
   describe('getCommandNames', () => {
-    it('sollte alle Command-Namen zurückgeben', () => {
+    it('returns all command names', () => {
       const command1: ICommand = {
         name: 'hello',
         description: 'Hello Command',

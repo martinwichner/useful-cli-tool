@@ -12,29 +12,29 @@ describe('HelloCommand', () => {
   });
 
   describe('properties', () => {
-    it('sollte den korrekten Namen haben', () => {
+    it('should have correct name', () => {
       expect(helloCommand.name).toBe('hello');
     });
 
-    it('sollte eine Beschreibung haben', () => {
-      expect(helloCommand.description).toBe('Zeigt eine Willkommensnachricht');
+    it('should have a description', () => {
+      expect(helloCommand.description).toBe('Displays a welcome message');
     });
   });
 
   describe('execute', () => {
-    it('sollte eine Willkommensnachricht mit übergebenem Namen anzeigen', async () => {
+    it('should print a welcome message with provided name', async () => {
       await helloCommand.execute(['Alice']);
-      expect(Logger.success).toHaveBeenCalledWith('Hallo, Alice!');
+      expect(Logger.success).toHaveBeenCalledWith('Hello, Alice!');
     });
 
-    it('sollte "Welt" als Standard-Name verwenden', async () => {
+    it('should default to World when no name provided', async () => {
       await helloCommand.execute([]);
-      expect(Logger.success).toHaveBeenCalledWith('Hallo, Welt!');
+      expect(Logger.success).toHaveBeenCalledWith('Hello, World!');
     });
 
-    it('sollte den ersten Argument als Namen verwenden', async () => {
+    it('should use first argument as name', async () => {
       await helloCommand.execute(['Bob', 'ExtraArg']);
-      expect(Logger.success).toHaveBeenCalledWith('Hallo, Bob!');
+      expect(Logger.success).toHaveBeenCalledWith('Hello, Bob!');
     });
   });
 });

@@ -12,19 +12,19 @@ describe('ListCommand', () => {
   });
 
   describe('properties', () => {
-    it('sollte den korrekten Namen haben', () => {
+    it('should have correct name', () => {
       expect(listCommand.name).toBe('list');
     });
 
-    it('sollte eine Beschreibung haben', () => {
+    it('should have a description', () => {
       expect(listCommand.description).toBe(
-        'Zeigt alle verfügbaren Commands an'
+        'Displays all available commands'
       );
     });
   });
 
   describe('execute', () => {
-    it('sollte einen Info-Log ausgeben', async () => {
+    it('should output an info log', async () => {
       await listCommand.execute([]);
       expect(Logger.info).toHaveBeenCalled();
     });

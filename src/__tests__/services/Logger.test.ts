@@ -18,44 +18,44 @@ describe('Logger Service', () => {
   });
 
   describe('info', () => {
-    it('sollte eine Info-Nachricht mit ℹ Präfix ausgeben', () => {
-      Logger.info('Test Nachricht');
-      expect(consoleLogSpy).toHaveBeenCalledWith('ℹ  Test Nachricht');
+    it('should log info messages with ℹ prefix', () => {
+      Logger.info('Test message');
+      expect(consoleLogSpy).toHaveBeenCalledWith('ℹ  Test message');
     });
   });
 
   describe('success', () => {
-    it('sollte eine Success-Nachricht mit ✓ Präfix ausgeben', () => {
-      Logger.success('Operation erfolgreich');
-      expect(consoleLogSpy).toHaveBeenCalledWith('✓  Operation erfolgreich');
+    it('should log success messages with ✓ prefix', () => {
+      Logger.success('Operation successful');
+      expect(consoleLogSpy).toHaveBeenCalledWith('✓  Operation successful');
     });
   });
 
   describe('warn', () => {
-    it('sollte eine Warn-Nachricht mit ⚠ Präfix ausgeben', () => {
-      Logger.warn('Warnung');
-      expect(consoleWarnSpy).toHaveBeenCalledWith('⚠  Warnung');
+    it('should log warning messages with ⚠ prefix', () => {
+      Logger.warn('Warning');
+      expect(consoleWarnSpy).toHaveBeenCalledWith('⚠  Warning');
     });
   });
 
   describe('error', () => {
-    it('sollte eine Error-Nachricht mit ✗ Präfix ausgeben', () => {
-      Logger.error('Fehler aufgetreten');
-      expect(consoleErrorSpy).toHaveBeenCalledWith('✗  Fehler aufgetreten');
+    it('should log error messages with ✗ prefix', () => {
+      Logger.error('An error occurred');
+      expect(consoleErrorSpy).toHaveBeenCalledWith('✗  An error occurred');
     });
   });
 
   describe('debug', () => {
-    it('sollte nichts ausgeben wenn DEBUG nicht gesetzt ist', () => {
+    it('should not log when DEBUG is not set', () => {
       delete process.env.DEBUG;
-      Logger.debug('Debug Nachricht');
+      Logger.debug('Debug message');
       expect(consoleLogSpy).not.toHaveBeenCalled();
     });
 
-    it('sollte Debug-Nachricht ausgeben wenn DEBUG gesetzt ist', () => {
+    it('should log debug messages when DEBUG is set', () => {
       process.env.DEBUG = 'true';
-      Logger.debug('Debug Nachricht');
-      expect(consoleLogSpy).toHaveBeenCalledWith('🐛 Debug Nachricht');
+      Logger.debug('Debug message');
+      expect(consoleLogSpy).toHaveBeenCalledWith('🐛 Debug message');
       delete process.env.DEBUG;
     });
   });

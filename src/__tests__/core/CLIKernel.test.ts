@@ -18,7 +18,7 @@ describe('CLIKernel', () => {
   });
 
   describe('initialization', () => {
-    it('sollte Commands während der Initialisierung registrieren', () => {
+    it('registers commands during initialization', () => {
       const registry = kernel.getRegistry();
       expect(registry.exists('hello')).toBe(true);
       expect(registry.exists('list')).toBe(true);
@@ -26,14 +26,14 @@ describe('CLIKernel', () => {
   });
 
   describe('run', () => {
-    it('sollte einen bekannten Command ausführen', async () => {
+    it('executes a known command', async () => {
       const spyShowHelp = jest.spyOn(kernel, 'showHelp').mockImplementation();
       await kernel.run('hello', ['World']);
       expect(processExitSpy).not.toHaveBeenCalled();
       spyShowHelp.mockRestore();
     });
 
-    it('sollte einen Fehler bei unbekanntem Command anzeigen', async () => {
+    it('shows help on unknown command', async () => {
       const spyShowHelp = jest.spyOn(kernel, 'showHelp').mockImplementation();
       await kernel.run('unknown', []);
       expect(Logger.error).toHaveBeenCalled();
@@ -44,7 +44,7 @@ describe('CLIKernel', () => {
   });
 
   describe('showHelp', () => {
-    it('sollte verfügbare Commands anzeigen', () => {
+    it('prints available commands', () => {
       const consoleLogSpy = jest.spyOn(console, 'log').mockImplementation();
       kernel.showHelp();
       expect(consoleLogSpy).toHaveBeenCalled();
@@ -53,7 +53,7 @@ describe('CLIKernel', () => {
   });
 
   describe('getRegistry', () => {
-    it('sollte die CommandRegistry zurückgeben', () => {
+    it('returns the command registry', () => {
       const registry = kernel.getRegistry();
       expect(registry).toBeDefined();
       expect(registry.exists('hello')).toBe(true);
